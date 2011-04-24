@@ -1,113 +1,138 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
+---
+layout: default
+title: Firefly - Your personal URL shortener
+---
 
-  <title>ariejan/firefly @ GitHub</title>
+<p class="intro">
+Firefly is your own <strong>personal URL shortener</strong> for your <strong>own domain</strong>.
+It's written in <strong>Ruby</strong> and powered by <strong>Sinatra</strong>.
+</p>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #ffffff;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #191919;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #00ffff; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #00ffff; }
-    h3 { text-align: center; color: #00ffff; }
-    a { color: #00ffff; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+<ul class="nav">
+  <li><a class="button red" href="#features">Features</a></li>
+  <li><a class="button red" href="#code">Code</a></li>
+  <li><a class="button red" href="https://github.com/ariejan/firefly/issues">Support</a></li>
+  <li><a class="button red" href="http://rubygems.org/gems/firefly">Rubygems</a></li>
+  <li><a class="button red" href="#contribute">Contribute</a></li>
+</ul>
 
-<body>
-  <a href="http://github.com/ariejan/firefly"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<h2>Getting started</h2>
 
-  <div id="container">
+<p>Getting up and running with Firefly is really easy.</p>
 
-    <div class="download">
-      <a href="http://github.com/ariejan/firefly/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/ariejan/firefly/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+<p>First of all install the <code>firefly</code> gem. Also install <code>shotgun</code> so you can easily start Firefly.</p>
 
-    <h1><a href="http://github.com/ariejan/firefly">Firefly</a>
-      <span class="small">by <a href="http://github.com/ariejan">ariejan</a></span></h1>
+{% highlight bash %}
+gem install firefly shotgun
+{% endhighlight %}
 
-    <div class="description">
-      FireFly is a simple URL shortner for personal use.
-    </div>
+<p>Next download the sample <a href="https://github.com/ariejan/firefly/blob/master/config.ru.example"><code>config.ru</code></a> and change it to suit your needs.</p>
 
-    <p>Firefly is Rack based application, meaning that you can easily deploy it to Heroku or a web server using Passenger. Some servers (including Passenger) require you have a public directory available. Simple create an empty public directory and you're good to go.</p><h2>Install</h2>
-<p>gem install firefly</p>
-<h2>License</h2>
-<p>Copyright (c) 2009-2011 Ariejan de Vroom
+{% highlight bash %}
+curl https://github.com/ariejan/firefly/raw/master/config.ru.example > config.ru
+vim config.ru
+{% endhighlight %}
 
-Permission is hereby granted, free of charge, to any person obtaining
+<p>Then, simply start your own Firefly instance.</p>
+
+{% highlight bash %}
+shotgun
+{% endhighlight %}
+
+<h2>Deployment</h2>
+
+<p>Firefly is Rack based application, meaning that you can easily deploy it to <a href="http://heroku.com">Heroku</a> or a web server using <a href="http://www.modrails.com/">Passenger</a>.</p>
+
+<p>Some servers (including Passenger) require you have a <code>public</code> directory available. Simple create an empty <code>public</code> directory and you're good to go.</p>
+
+<h2 id="features">Features</h2>
+
+<p>Firefly contains the following features:</p>
+
+<ul>
+  <li>Easy to use web interface to shorten URLs</li>
+  <li>API access to shorten URLs programatically</li>
+  <li>Bookmarklet to quickly the current URL in your browser</li>
+  <li>Custom short codes</li>
+  <li>Direct sharing to Twitter, Facebook and Hyves.</li>
+  <li>Usage tracking</li>
+  <li>Create QR Codes of your short URLs (requires <code>barby</code>)</li>
+</ul>
+
+ <h2 id="qrcode">Enabling QR Code support</h2>
+
+<img src='http://aj.gs/3A.png' width='100' align='right' style='padding: 10px;' />
+
+<p>Firefly is able to generate QR Codes containing the short URL on the fly. This QR Code can be distributed in print media. When scanned (with a mobile phone, for example) the QR Code will yield the short URL and allows the user to open it in their browser.</p>
+
+<p>To enable this you must install two gems: <code>barby</code> and <code>png</code>.</p>
+
+{% highlight bash %}
+gem install barby png
+{% endhighlight %}
+
+<p>Then restart Firefly and QR Support is ready.</p>
+
+<p>To get the QR code for a specific short URL, simply add <code>.png</code> to the URL.</p>
+
+{% highlight bash %}
+http://aj.gs/3A => http://aj.gs/3A.png
+{% endhighlight %}
+
+<h2 id="code">The Code</h2>
+
+<p>The code for the Firefly gem can be forked at Github.</p>
+
+<p><a href="https://github.com/ariejan/firefly">https://github.com/ariejan/firefly</a></p>
+
+<h2 id="contribute">Contribute</h2>
+
+<p>There are several ways you can contribute to Firefly:</p>
+
+<ul>
+  <li>Create a ticket if you find a bug</li>
+  <li>Fork the project and add new features or fix open issues</li>
+  <li>Blog about it!</li>
+  <li><a href="http://twitter.com/fireflyrb">Follow @fireflyrb</a></li>
+</ul>
+
+<h2 id="links">Links</h2>
+
+<ul>
+  <li><a href="http://rubygems.org/gems/firefly">Rubygems</a>
+  <li><a href="https://github.com/ariejan/firefly">Github repository</a>
+  <li><a href="https://github.com/ariejan/firefly/issues">Issue tracker</a>
+</ul>
+
+<h2 id="credits">Author and contributors</h2>
+
+<p>Firefly is written and maintained by <a href="http://ariejan.net">Ariejan de Vroom</a> from <a href="http://kabisa.nl">Kabisa ICT</a>.</p>
+
+<ul>
+  <li>Ariejan de Vroom [ariejan] - Original author and maintainer</li>
+  <li>Matthew Boeh [mboeh]</li>
+  <li>Joost Saanen [stalkert]</li>
+</ul>
+
+<h2 id='license'>License</h2>
+
+<p>Copyright (c) 2009-2011 Ariejan de Vroom</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+the following conditions:</p>
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-<h2>Authors</h2>
-<p>Ariejan de Vroom (ariejan@ariejan.net)
-<br/>Joost Saanen (joost@roos.be)
-<br/>Matthew Boeh (matthew.boeh@gmail.com)
-<br/>
-<br/>      </p>
-<h2>Contact</h2>
-<p>Ariejan de Vroom (ariejan@ariejan.net)
-<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/ariejan/firefly/zipball/master">zip</a> or
-      <a href="http://github.com/ariejan/firefly/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/ariejan/firefly</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/ariejan/firefly">ariejan/firefly</a>
-    </div>
-
-  </div>
-
-  <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-60089-39");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-</body>
-</html>
