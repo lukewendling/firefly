@@ -1,4 +1,4 @@
-- if @authenticated
+- if true #@authenticated
   .sidebox
     %h2 Bookmarklet
 
@@ -13,9 +13,11 @@
     %form{ :action => '/api/add', :method => 'post' }
       %input{ :type => "hidden", :name => "visual", :value => "1" }
       %p
-        %input.big_url{ :type => 'text', :placeholder => "Paste your long URL here...", :name => 'url', :id => 'url', :size => 40, :autocomplete => "off", :spellcheck => 'false' }
+        %input.big_url{ :type => 'text', :placeholder => "Paste your long URL here...", :name => 'url', :id => 'url', :size => 40, :spellcheck => 'false' }
+        %span{ :style => "font-size: 1.8em;" }= '?' 
+        %input.big_url{ :type => 'text', :placeholder => "User ID", :name => 'user_id', :id => 'user_id', :size => 4, :spellcheck => 'false' }
         %span{ :style => "font-size: 1.8em;" }= '>' 
-        %input.big_url{ :type => 'text', :placeholder => "Optional short code", :name => 'short', :id => 'short', :size => 20, :autocomplete => "off", :spellcheck => 'false' }
+        %input.big_url{ :type => 'text', :placeholder => "Optional code", :name => 'short', :id => 'short', :size => 16, :spellcheck => 'false' }
       %p
         %input.big_url{ :type => 'submit', :name => 'submit', :id => 'submit', :value => "Make it short!" }
 
@@ -25,6 +27,7 @@
     %tr
       %td.label(nowrap='nowrap') Short URL <a href="/?s=code&d=asc">▲</a> <a href="/?s=code&d=desc">▼</a>
       %td.label(nowrap='nowrap') Full URL <a href="/?s=url&d=asc">▲</a> <a href="/?s=url&d=desc">▼</a>
+      %td.label(nowrap='nowrap') User ID
       %td.label(nowrap='nowrap') Clicks <a href="/?s=clicks&d=asc">▲</a> <a href="/?s=clicks&d=desc">▼</a>
       %td.label(nowrap='nowrap') Shortened At <a href="/?s=created_at&d=asc">▲</a> <a href="/?s=created_at&d=desc">▼</a>
       %td.label &nbsp;
@@ -33,6 +36,7 @@
         %td.value
           %input{ :type => "text", :value => short_url(url), :class => 'short_url', :size => 31 }
         %td.value.fill <a href="#{url.url}">#{truncate url.url, 130}</a>
+        %td.value= url.user_id
         %td.value.center= url.clicks
         %td.value= url.created_at.strftime("%Y-%m-%d %H:%M")
         %td.value.actions

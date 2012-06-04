@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'sinatra/base'
+require 'sinatra/reloader'
 require 'haml'
 require 'digest/md5'
 
@@ -11,11 +12,12 @@ module Firefly
   end
 
   class Server < Sinatra::Base
-    enable :sessions
-
-    if Firefly.environment == "development"
+    configure :development do
+      register Sinatra::Reloader
       enable :logging, :dump_errors, :raise_errors
     end
+    
+    enable :sessions
 
     dir = File.join(File.dirname(__FILE__), '..', '..')
 
@@ -86,23 +88,25 @@ module Firefly
       end
 
       def validate_api_permission
-        if !has_valid_api_cookie? && params[:api_key] != config[:api_key]
-          status 401
-          return false
-        else
-          return true
-        end
+        true
+#        TODO: need api validation?
+#        if !has_valid_api_cookie? && params[:api_key] != config[:api_key]
+#          status 401
+#          return false
+#        else
+#          return true
+#        end
       end
 
       def short_url(url)
         "http://#{config[:hostname]}/#{url.code}"
       end
 
-      def generate_short_url(url = nil, requested_code = nil)
+      def generate_short_url(url = nil, user_id = nil, requested_code = nil)
         code, result = nil, nil
 
         begin
-          ff_url  = Firefly::Url.shorten(url, requested_code)
+          ff_url  = Firefly::Url.shorten(url, user_id, requested_code)
           code, result = ff_url.code, "http://#{config[:hostname]}/#{ff_url.code}"
         rescue Firefly::InvalidUrlError
           code, result = nil, "ERROR: The URL you posted is invalid."
@@ -153,8 +157,8 @@ module Firefly
       redirect '/'
     end
 
-    # GET /add?url=http://ariejan.net&api_key=test
-    # POST /add?url=http://ariejan.net&api_key=test
+    # GET /add?url=http://ariejan.net&api_key=test&user_id=42
+    # POST /add?url=http://ariejan.net&api_key=test&user_id=42
     #
     # Returns the shortened URL
     api_add = lambda {
@@ -162,7 +166,8 @@ module Firefly
 
       @url            = params[:url]
       @requested_code = params[:short]
-      @code, @result  = generate_short_url(@url, @requested_code)
+      @user_id        = params[:user_id]
+      @code, @result  = generate_short_url(@url, @user_id, @requested_code)
       invalid = @code.nil?
 
       if params[:visual]
@@ -241,7 +246,7 @@ module Firefly
         status 404
         "Sorry, that code is unknown."
       else
-        @url.register_click!
+        @url.register_click!(request.ip)
         redirect @url.url, 301
       end
     end
