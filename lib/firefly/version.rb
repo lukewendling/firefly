@@ -1,4 +1,4 @@
 # encoding: UTF-8
 module Firefly
-  VERSION = "1.5.3"
+  VERSION = "0.9.0"
 end

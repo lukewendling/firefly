@@ -1,8 +1,2 @@
-require 'bundler'
-
-task :default => :spec
-
-desc "Run all specs"
-task "spec" do
-  exec "bundle exec rspec spec"
-end
+#!/usr/bin/env rake
+require "bundler/gem_tasks"
