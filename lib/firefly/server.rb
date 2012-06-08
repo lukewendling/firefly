@@ -1,6 +1,7 @@
 # encoding: UTF-8
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'json'
 require 'haml'
 require 'digest/md5'
 
@@ -135,7 +136,7 @@ module Firefly
       @authenticated = has_valid_api_cookie?
       @config        = config
       @highlight     = nil
-      @title         = "Firefly at http://#{@config[:hostname]}"
+      @title         = "tg-firefly at http://#{@config[:hostname]}"
 
       set :session_secret, @config[:session_secret]
     end
@@ -175,7 +176,9 @@ module Firefly
         @code.nil? ? haml(:error) : redirect("/?highlight=#{@code}")
       else
         head 422 if invalid
-        @result
+#        @result
+        content_type :json
+        {:short_url => @result}.to_json
       end
     }
 

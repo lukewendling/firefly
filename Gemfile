@@ -9,6 +9,7 @@ gem "dm-aggregates",     "~> 1.2.0"
 gem "haml",              "~> 3.1.4"
 gem "escape_utils",      "~> 0.2.4"
 gem "thin"
+gem "json"
 
 group :production do
   gem 'dm-postgres-adapter'
