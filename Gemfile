@@ -10,6 +10,7 @@ gem "dm-mysql-adapter",  "~> 1.2.0"
 gem "haml",              "~> 3.1.4"
 gem "escape_utils",      "~> 0.2.4"
 gem "thin"
+gem 'dm-postgres-adapter'
 
 group :development do
   gem "pry"
