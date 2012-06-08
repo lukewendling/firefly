@@ -6,11 +6,13 @@ gem "dm-core",           "~> 1.2.0"
 gem "dm-migrations",     "~> 1.2.0"
 gem "dm-transactions",   "~> 1.2.0"
 gem "dm-aggregates",     "~> 1.2.0"
-gem "dm-mysql-adapter",  "~> 1.2.0"
 gem "haml",              "~> 3.1.4"
 gem "escape_utils",      "~> 0.2.4"
 gem "thin"
-gem 'dm-postgres-adapter'
+
+group :production do
+  gem 'dm-postgres-adapter'
+end
 
 group :development do
   gem "pry"
