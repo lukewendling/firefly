@@ -79,6 +79,15 @@ module Firefly
         @config[:sharing_targets].include?(params[:target].downcase.to_sym)
       end
 
+      def validate_share_domain
+        if has_valid_share_domain?
+          return true
+        else
+          status 401
+          return false
+        end
+      end
+      
       def validate_share_permission
         if has_valid_share_key? && has_valid_share_domain? && has_valid_share_target?
           return true
@@ -162,9 +171,11 @@ module Firefly
     # POST /add?url=http://ariejan.net&api_key=test&user_id=42
     #
     # Returns the shortened URL
+#    TODO: convert all responses to json
     api_add = lambda {
       validate_api_permission or return "Permission denied: Invalid API key"
-
+      validate_share_domain or return "Invalid sharing domain"
+      
       @url            = params[:url]
       @requested_code = params[:short]
       @user_id        = params[:user_id]
